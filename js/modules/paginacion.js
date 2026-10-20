@@ -17,7 +17,10 @@ function simulatePagingAlgo(algo, numFrames, refs) {
 	let pageFaults = 0;
 	let matrix = [];
 	let faultsHistory = [];
-	let usageHistory = [];
+
+	// Arreglos auxiliares para rastrear tiempos de llegada e historial de uso
+	let arrivalOrder = []; // Para FIFO: guarda el orden de llegada a cada marco
+	let usageHistory = []; // Para LRU: guarda el historial global de referencias
 
 	refs.forEach((page, index) => {
 		let isFault = false;
@@ -26,14 +29,23 @@ function simulatePagingAlgo(algo, numFrames, refs) {
 			isFault = true;
 			pageFaults++;
 
+			// Caso 1: Todavía hay marcos libres (llenado inicial)
 			if (frames.includes(null)) {
 				const emptyIdx = frames.indexOf(null);
 				frames[emptyIdx] = page;
+				arrivalOrder.push(page); // Se registra en la cola de llegada FIFO
 			} else {
+				// Caso 2: Memoria llena -> Aplicar Reemplazo en Casilla Fija
+				let replaceIdx = 0;
+
 				if (algo === 'FIFO') {
-					frames.shift();
-					frames.push(page);
+					// Obtener la app que llegó primero de entre las que están actualmente en RAM
+					const victimPage = arrivalOrder.shift();
+					replaceIdx = frames.indexOf(victimPage);
+					frames[replaceIdx] = page; // Reemplaza la casilla exacta sin desplazar los marcos
+					arrivalOrder.push(page);   // La nueva app entra al final del orden FIFO
 				} else if (algo === 'LRU') {
+					// Menos recientemente usada
 					let minIdx = Infinity;
 					let victimPage = null;
 
@@ -44,9 +56,10 @@ function simulatePagingAlgo(algo, numFrames, refs) {
 							victimPage = f;
 						}
 					});
-					const replaceIdx = frames.indexOf(victimPage);
+					replaceIdx = frames.indexOf(victimPage);
 					frames[replaceIdx] = page;
 				} else if (algo === 'OPT') {
+					// Futuro más lejano
 					let maxFuture = -1;
 					let victimIdx = 0;
 
@@ -60,7 +73,8 @@ function simulatePagingAlgo(algo, numFrames, refs) {
 							victimIdx = fIdx;
 						}
 					});
-					frames[victimIdx] = page;
+					replaceIdx = victimIdx;
+					frames[replaceIdx] = page;
 				}
 			}
 		}
@@ -94,7 +108,7 @@ function renderPagingResults(results, refs, times) {
 		refs.forEach(r => html += `<th>${r}</th>`);
 		html += `</tr></thead><tbody>`;
 
-		// Filas de Marcos
+		// Filas de Marcos (Casillas Fijas)
 		const numFrames = data.matrix[0].frames.length;
 		for (let f = 0; f < numFrames; f++) {
 			html += `<tr><td>Marco ${f + 1}</td>`;
