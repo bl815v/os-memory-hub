@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>OS Memory Hub - Gestión de Memoria</title>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+	<!-- Header -->
+	<header class="app-header">
+		<div class="logo-container">
+			<button id="btnToggleSidebar" class="btn btn-icon" title="Contraer/Expandir Menú">
+				<i class="fa-solid fa-bars"></i>
+			</button>
+			<i class="fa-solid fa-microchip logo-icon"></i>
+			<h1>OS Memory Hub</h1>
+		</div>
+	</header>
+
+	<div class="main-container">
+		<!-- Sidebar Navigation -->
+		<nav id="sidebar" class="sidebar">
+			<ul>
+				<li class="nav-item active" data-target="mod-paginacion" title="Paginación">
+					<i class="fa-solid fa-table-cells"></i> <span class="nav-text">1. Paginación</span>
+				</li>
+				<li class="nav-item" data-target="mod-jerarquia" title="Jerarquía & EAT">
+					<i class="fa-solid fa-layer-group"></i> <span class="nav-text">2. Jerarquía & EAT</span>
+				</li>
+				<li class="nav-item" data-target="mod-asignacion" title="Asignación RAM">
+					<i class="fa-solid fa-memory"></i> <span class="nav-text">3. Asignación RAM</span>
+				</li>
+				<li class="nav-item" data-target="mod-scripts" title="Archivos .txt">
+					<i class="fa-solid fa-file-code"></i> <span class="nav-text">4. Archivos .txt</span>
+				</li>
+				<li class="nav-item" data-target="mod-lenguajes" title="Memoria en Lenguajes">
+					<i class="fa-solid fa-code"></i> <span class="nav-text">5. Mem. en Lenguajes</span>
+				</li>
+			</ul>
+		</nav>
+
+		<!-- Main Content Panels -->
+		<main class="content-area">
+
+			<!-- Módulo 1: Paginación -->
+			<section id="mod-paginacion" class="module-panel active">
+				<h2><i class="fa-solid fa-table-cells"></i> Módulo 1: Reemplazo de Páginas</h2>
+				<p class="module-desc">Simula el comportamiento de marcos de página en RAM frente a ráfagas de
+					referencias con sus respectivos horarios.</p>
+
+				<div class="card controls-card">
+					<div class="form-row">
+						<div class="form-group">
+							<label for="numFrames">Número de Marcos (RAM):</label>
+							<input type="number" id="numFrames" value="3" min="1" max="10">
+						</div>
+						<div class="form-group flex-grow">
+							<label for="pageSequence">Secuencia de Referencias (Apps/Páginas):</label>
+							<input type="text" id="pageSequence"
+								value="WhatsApp Instagram Maps WhatsApp Spotify WhatsApp Instagram WhatsApp Maps WhatsApp">
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group flex-grow">
+							<label for="timeSequence">Secuencia de Horas (Separadas por espacio):</label>
+							<input type="text" id="timeSequence"
+								value="7:00 7:20 7:40 8:00 9:30 11:00 12:30 14:00 17:00 18:00">
+						</div>
+					</div>
+					<div class="form-row btn-group">
+						<button id="btnRunPaging" class="btn btn-primary"><i class="fa-solid fa-play"></i> Simular
+							Reemplazo</button>
+						<button id="btnLoadAct1" class="btn btn-secondary"><i class="fa-solid fa-mobile-screen"></i>
+							Cargar Datos Actividad 1</button>
+					</div>
+				</div>
+
+				<div id="pagingResults" class="results-container"></div>
+			</section>
+
+			<!-- Módulo 2: Jerarquía -->
+			<section id="mod-jerarquia" class="module-panel">
+				<h2><i class="fa-solid fa-layer-group"></i> Módulo 2: Jerarquía de Memoria (EAT)</h2>
+				<p class="module-desc">Calcula el tiempo promedio de acceso configurando aciertos y tiempos por nivel de
+					jerarquía.</p>
+
+				<div class="grid-2col">
+					<div class="card">
+						<h3><i class="fa-solid fa-utensils"></i> Analogía de la Cocina (Arepas) & Hardware</h3>
+						<div class="form-group">
+							<label>% Acierto Nevera / Hit Rate RAM: <span id="valHitRate">90%</span></label>
+							<input type="range" id="rangeHitRate" min="50" max="100" value="90">
+						</div>
+						<div class="form-row">
+							<div class="form-group flex-grow">
+								<label for="timeMesa">Tiempo Mesa / Caché (s):</label>
+								<input type="number" id="timeMesa" value="2">
+							</div>
+							<div class="form-group flex-grow">
+								<label for="timeNevera">Tiempo Nevera / RAM (s):</label>
+								<input type="number" id="timeNevera" value="20">
+							</div>
+							<div class="form-group flex-grow">
+								<label for="timeTienda">Tiempo Tienda / Disco (s):</label>
+								<input type="number" id="timeTienda" value="600">
+							</div>
+						</div>
+						<button id="btnCalcKitchen" class="btn btn-primary"><i class="fa-solid fa-calculator"></i>
+							Calcular EAT</button>
+					</div>
+
+					<div class="card">
+						<h3><i class="fa-solid fa-lightbulb"></i> Respuestas Teóricas Actividad 2</h3>
+						<div id="kitchenAnswers" class="answers-box"></div>
+					</div>
+				</div>
+
+				<div id="kitchenResults" class="results-container"></div>
+			</section>
+
+			<!-- Módulo 3: Asignación -->
+			<section id="mod-asignacion" class="module-panel">
+				<h2><i class="fa-solid fa-memory"></i> Módulo 3: Asignación Contigua de Memoria</h2>
+				<p class="module-desc">Asigna y libera bloques en RAM dinámicamente según la estrategia elegida.</p>
+
+				<div class="grid-2col">
+					<div class="card">
+						<h3>Configuración & Estrategia</h3>
+						<div class="form-row">
+							<div class="form-group flex-grow">
+								<label for="totalMemSize">Memoria Total (KB):</label>
+								<input type="number" id="totalMemSize" value="2100">
+							</div>
+							<div class="form-group flex-grow">
+								<label for="fitStrategy">Estrategia:</label>
+								<select id="fitStrategy">
+									<option value="FIRST">First-Fit</option>
+									<option value="BEST">Best-Fit</option>
+									<option value="WORST">Worst-Fit</option>
+								</select>
+							</div>
+						</div>
+						<button id="btnInitMemory" class="btn btn-secondary"><i class="fa-solid fa-rotate-right"></i>
+							Reiniciar Memoria</button>
+						<button id="btnLoadPresetHoles" class="btn btn-secondary"><i class="fa-solid fa-list-check"></i>
+							Cargar Huecos Taller (100..600 KB)</button>
+					</div>
+
+					<div class="card">
+						<h3>Asignar / Liberar Proceso</h3>
+						<div class="form-row">
+							<div class="form-group flex-grow">
+								<label for="procName">Nombre Proceso:</label>
+								<input type="text" id="procName" value="P1">
+							</div>
+							<div class="form-group flex-grow">
+								<label for="procSize">Tamaño (KB):</label>
+								<input type="number" id="procSize" value="212">
+							</div>
+						</div>
+						<div class="form-row btn-group">
+							<button id="btnAllocateProc" class="btn btn-primary"><i class="fa-solid fa-plus"></i>
+								Asignar Proceso</button>
+							<button id="btnFreeProc" class="btn btn-warning"><i class="fa-solid fa-trash"></i> Liberar
+								por Nombre</button>
+							<button id="btnCompactMem" class="btn btn-secondary"><i class="fa-solid fa-compress"></i>
+								Compactar</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<h3>Mapa Visual de Memoria RAM</h3>
+					<div id="allocMemoryVisualizer" class="visualizer-container"></div>
+					<div id="allocLogs" class="answers-box" style="min-height: 80px; height: 100px;"></div>
+				</div>
+			</section>
+
+			<!-- Módulo 4: Archivos .txt (Debugger Paso a Paso) -->
+			<section id="mod-scripts" class="module-panel">
+				<h2><i class="fa-solid fa-file-code"></i> Módulo 4: Intérprete & Debugger Paso a Paso (.txt)</h2>
+				<p class="module-desc">Carga un script y ejecútalo línea por línea para inspeccionar el estado de la
+					memoria en tiempo real.</p>
+
+				<div class="grid-2col">
+					<div class="card">
+						<h3>Cargar o Escribir Script</h3>
+						<div class="form-group">
+							<label for="fileInput">Seleccionar archivo .txt:</label>
+							<input type="file" id="fileInput" accept=".txt">
+						</div>
+						<div class="form-group">
+							<label for="scriptCode">Contenido del Script:</label>
+							<textarea id="scriptCode" rows="11"
+								placeholder="Escribe o carga un archivo .txt aquí..."></textarea>
+						</div>
+						<button id="btnInitDebug" class="btn btn-primary"><i class="fa-solid fa-bug"></i> Cargar en
+							Debugger</button>
+					</div>
+
+					<div class="card">
+						<h3>Controles de Depuración</h3>
+						<div class="form-row btn-group" style="margin-bottom: 1rem;">
+							<button id="btnPrevStep" class="btn btn-secondary" disabled><i
+									class="fa-solid fa-backward-step"></i> Anterior</button>
+							<button id="btnNextStep" class="btn btn-primary" disabled><i
+									class="fa-solid fa-forward-step"></i> Siguiente</button>
+							<button id="btnResetDebug" class="btn btn-warning" disabled><i
+									class="fa-solid fa-rotate-left"></i> Reiniciar</button>
+						</div>
+						<div id="stepInfo" class="answers-box"
+							style="min-height: 50px; height: 60px; margin-bottom: 1rem; color: var(--accent-color);">
+							Carga un script y presiona "Cargar en Debugger" para empezar.
+						</div>
+
+						<h3>Estado Visual de RAM</h3>
+						<div id="scriptMemVisualizer" class="visualizer-container"></div>
+						<div id="scriptLogs" class="answers-box" style="margin-top: 1rem; min-height: 100px;"></div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Módulo 5: Lenguajes -->
+			<section id="mod-lenguajes" class="module-panel">
+				<h2><i class="fa-solid fa-code"></i> Módulo 5: Gestión de Memoria en Lenguajes</h2>
+				<p class="module-desc">Análisis comparativo de la administración de memoria en C++, Python y Java
+					(Actividad 5).</p>
+
+				<div class="card controls-card">
+					<div class="form-group">
+						<label for="langSelect">Selecciona un Lenguaje de Programación:</label>
+						<select id="langSelect">
+							<option value="cpp">C++ (Gestión Manual & Punteros)</option>
+							<option value="python">Python (Conteo de Referencias & GC)</option>
+							<option value="java">Java (JVM, Heap & Garbage Collection)</option>
+						</select>
+					</div>
+				</div>
+
+				<div id="langDetails" class="details-container"></div>
+			</section>
+
+		</main>
+	</div>
+
+	<script src="js/interpreter.js"></script>
+	<script src="js/modules/paginacion.js"></script>
+	<script src="js/modules/jerarquia.js"></script>
+	<script src="js/modules/asignacion.js"></script>
+	<script src="js/modules/scripts.js"></script>
+	<script src="js/modules/lenguajes.js"></script>
+	<script src="js/app.js"></script>
+</body>
+
+</html>
