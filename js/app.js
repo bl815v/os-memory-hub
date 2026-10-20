@@ -11,6 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
 		sidebar.classList.toggle('collapsed');
 	});
 
+	// Lógica de Cambio de Tema (Claro / Oscuro)
+	const btnThemeToggle = document.getElementById('btnThemeToggle');
+	const themeIcon = document.getElementById('themeIcon');
+
+	btnThemeToggle.addEventListener('click', () => {
+		document.body.classList.toggle('light-theme');
+
+		if (document.body.classList.contains('light-theme')) {
+			themeIcon.classList.remove('fa-sun');
+			themeIcon.classList.add('fa-moon');
+		} else {
+			themeIcon.classList.remove('fa-moon');
+			themeIcon.classList.add('fa-sun');
+		}
+	});
+
 	// Navigation Tabs
 	const navItems = document.querySelectorAll('.nav-item');
 	const panels = document.querySelectorAll('.module-panel');

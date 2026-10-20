@@ -20,6 +20,11 @@
 			<i class="fa-solid fa-microchip logo-icon"></i>
 			<h1>OS Memory Hub</h1>
 		</div>
+
+		<!-- Botón de Tema alineado a la esquina superior derecha -->
+		<button id="btnThemeToggle" class="btn btn-icon" title="Cambiar Tema (Claro/Oscuro)">
+			<i id="themeIcon" class="fa-solid fa-sun"></i>
+		</button>
 	</header>
 
 	<div class="main-container">
@@ -187,6 +192,31 @@
 				<p class="module-desc">Carga un script y ejecútalo línea por línea para inspeccionar el estado de la
 					memoria en tiempo real.</p>
 
+				<!-- Visualización Grande de RAM en la parte superior -->
+				<div class="card">
+					<h3>Estado Visual de RAM (Paso a Paso)</h3>
+					<div id="scriptMemVisualizer" class="visualizer-container"></div>
+					<div id="stepInfo" class="answers-box"
+						style="min-height: 40px; height: 45px; margin-top: 0.8rem; color: var(--accent-color); text-align: center; font-weight: bold;">
+						Carga un script y presiona "Cargar en Debugger" para comenzar.
+					</div>
+				</div>
+
+				<!-- Barra de Controles y Botón de Cargar centrados debajo de la RAM -->
+				<div class="card" style="text-align: center;">
+					<div class="form-row btn-group" style="justify-content: center; margin-bottom: 0;">
+						<button id="btnInitDebug" class="btn btn-primary"><i class="fa-solid fa-bug"></i> Cargar en
+							Debugger</button>
+						<button id="btnPrevStep" class="btn btn-secondary" disabled><i
+								class="fa-solid fa-backward-step"></i> Anterior</button>
+						<button id="btnNextStep" class="btn btn-primary" disabled><i
+								class="fa-solid fa-forward-step"></i> Siguiente</button>
+						<button id="btnResetDebug" class="btn btn-warning" disabled><i
+								class="fa-solid fa-rotate-left"></i> Reiniciar</button>
+					</div>
+				</div>
+
+				<!-- Editor de Código y Registros en Paralelo -->
 				<div class="grid-2col">
 					<div class="card">
 						<h3>Cargar o Escribir Script</h3>
@@ -196,31 +226,14 @@
 						</div>
 						<div class="form-group">
 							<label for="scriptCode">Contenido del Script:</label>
-							<textarea id="scriptCode" rows="11"
+							<textarea id="scriptCode" rows="8"
 								placeholder="Escribe o carga un archivo .txt aquí..."></textarea>
 						</div>
-						<button id="btnInitDebug" class="btn btn-primary"><i class="fa-solid fa-bug"></i> Cargar en
-							Debugger</button>
 					</div>
 
 					<div class="card">
-						<h3>Controles de Depuración</h3>
-						<div class="form-row btn-group" style="margin-bottom: 1rem;">
-							<button id="btnPrevStep" class="btn btn-secondary" disabled><i
-									class="fa-solid fa-backward-step"></i> Anterior</button>
-							<button id="btnNextStep" class="btn btn-primary" disabled><i
-									class="fa-solid fa-forward-step"></i> Siguiente</button>
-							<button id="btnResetDebug" class="btn btn-warning" disabled><i
-									class="fa-solid fa-rotate-left"></i> Reiniciar</button>
-						</div>
-						<div id="stepInfo" class="answers-box"
-							style="min-height: 50px; height: 60px; margin-bottom: 1rem; color: var(--accent-color);">
-							Carga un script y presiona "Cargar en Debugger" para empezar.
-						</div>
-
-						<h3>Estado Visual de RAM</h3>
-						<div id="scriptMemVisualizer" class="visualizer-container"></div>
-						<div id="scriptLogs" class="answers-box" style="margin-top: 1rem; min-height: 100px;"></div>
+						<h3>Historial de Comandos & Salida</h3>
+						<div id="scriptLogs" class="answers-box" style="min-height: 200px; height: 100%;"></div>
 					</div>
 				</div>
 			</section>

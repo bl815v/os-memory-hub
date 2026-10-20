@@ -1,4 +1,5 @@
 :root {
+	/* Tema Oscuro (Por defecto) */
 	--bg-primary: #0f172a;
 	--bg-secondary: #1e293b;
 	--bg-card: #334155;
@@ -9,8 +10,62 @@
 	--danger-color: #f43f5e;
 	--success-color: #10b981;
 	--warning-color: #f59e0b;
+	--border-color: #475569;
 	--border-radius: 8px;
 	--transition-speed: 0.25s;
+
+	/* Botones en Modo Oscuro */
+	--btn-primary-bg: #38bdf8;
+	--btn-primary-text: #0f172a;
+	--btn-secondary-bg: #475569;
+	--btn-secondary-text: #f8fafc;
+	--btn-secondary-hover: #64748b;
+	--btn-warning-bg: #f59e0b;
+	--btn-warning-text: #0f172a;
+
+	/* Estado de Bloques RAM en Modo Oscuro */
+	--ram-free-bg: #334155;
+	--ram-free-text: #94a3b8;
+	--ram-occupied-bg: #0284c7;
+	--ram-occupied-text: #ffffff;
+}
+
+/* Modo Claro con Alto Contraste (WCAG AA/AAA) */
+body.light-theme {
+	--bg-primary: #f8fafc;
+	/* Slate 50 */
+	--bg-secondary: #ffffff;
+	/* Blanco Puro */
+	--bg-card: #f1f5f9;
+	/* Slate 100 */
+	--accent-color: #0369a1;
+	/* Sky 800 - Alto contraste visual */
+	--accent-hover: #075985;
+	/* Sky 900 */
+	--text-main: #0f172a;
+	/* Slate 900 - Lectura profunda */
+	--text-muted: #334155;
+	/* Slate 700 - Legibilidad clara */
+	--border-color: #cbd5e1;
+	/* Slate 300 */
+
+	/* Botones en Modo Claro (Contraste Máximo) */
+	--btn-primary-bg: #0284c7;
+	--btn-primary-text: #ffffff;
+	--btn-secondary-bg: #334155;
+	/* Slate 700 para contraste adecuado */
+	--btn-secondary-text: #ffffff;
+	/* Texto blanco puro sobre gris oscuro */
+	--btn-secondary-hover: #1e293b;
+	--btn-warning-bg: #d97706;
+	/* Amber 600 */
+	--btn-warning-text: #ffffff;
+
+	/* Estado de Bloques RAM en Modo Claro */
+	--ram-free-bg: #e2e8f0;
+	--ram-free-text: #0f172a;
+	--ram-occupied-bg: #0284c7;
+	--ram-occupied-text: #ffffff;
 }
 
 * {
@@ -26,15 +81,19 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+	transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
-/* Header */
+/* Header con Distribución a los Extremos */
 .app-header {
 	background-color: var(--bg-secondary);
 	padding: 0.8rem 1.5rem;
 	display: flex;
 	align-items: center;
-	border-bottom: 2px solid #475569;
+	justify-content: space-between;
+	width: 100%;
+	border-bottom: 2px solid var(--border-color);
+	transition: background-color var(--transition-speed), border-color var(--transition-speed);
 }
 
 .logo-container {
@@ -48,18 +107,21 @@ body {
 	color: var(--accent-color);
 }
 
-.btn-icon {
+/* Botón del Tema en la Esquina Derecha */
+#btnThemeToggle {
+	font-size: 1.3rem;
+	color: var(--text-main);
+	padding: 0.5rem 0.8rem;
+	border-radius: 50%;
 	background: transparent;
 	border: none;
-	color: var(--text-main);
-	font-size: 1.2rem;
 	cursor: pointer;
-	padding: 0.4rem 0.8rem;
-	border-radius: 4px;
+	transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
-.btn-icon:hover {
-	background-color: rgba(255, 255, 255, 0.1);
+#btnThemeToggle:hover {
+	background-color: var(--bg-card);
+	color: var(--accent-color);
 }
 
 /* Layout Main */
@@ -73,8 +135,8 @@ body {
 	width: 240px;
 	background-color: var(--bg-secondary);
 	padding: 1rem 0;
-	border-right: 1px solid #475569;
-	transition: width var(--transition-speed) ease;
+	border-right: 1px solid var(--border-color);
+	transition: width var(--transition-speed) ease, background-color var(--transition-speed);
 	overflow: hidden;
 }
 
@@ -104,14 +166,18 @@ body {
 }
 
 .nav-item:hover {
-	background-color: rgba(255, 255, 255, 0.05);
+	background-color: rgba(0, 0, 0, 0.05);
 	color: var(--text-main);
 }
 
 .nav-item.active {
 	background-color: var(--accent-color);
-	color: #000;
+	color: #ffffff;
 	font-weight: bold;
+}
+
+body:not(.light-theme) .nav-item.active {
+	color: #0f172a;
 }
 
 .sidebar.collapsed .nav-text {
@@ -157,7 +223,8 @@ body {
 	border-radius: var(--border-radius);
 	padding: 1.5rem;
 	margin-bottom: 1.5rem;
-	border: 1px solid #475569;
+	border: 1px solid var(--border-color);
+	transition: background-color var(--transition-speed), border-color var(--transition-speed);
 }
 
 .grid-2col {
@@ -187,6 +254,7 @@ body {
 label {
 	font-size: 0.9rem;
 	color: var(--text-muted);
+	font-weight: 600;
 }
 
 input[type="text"],
@@ -194,19 +262,22 @@ input[type="number"],
 select,
 textarea {
 	background-color: var(--bg-primary);
-	border: 1px solid #475569;
+	border: 1px solid var(--border-color);
 	color: var(--text-main);
 	padding: 0.6rem 1rem;
 	border-radius: 4px;
 	font-size: 0.95rem;
+	transition: background-color var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed);
 }
 
 textarea {
+	width: 100%;
+	min-height: 150px;
 	resize: vertical;
 	font-family: monospace;
 }
 
-/* Buttons */
+/* Botones Accesibles con Alto Contraste */
 .btn {
 	padding: 0.6rem 1.2rem;
 	border: none;
@@ -216,34 +287,52 @@ textarea {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.5rem;
-	transition: background-color var(--transition-speed);
+	transition: background-color var(--transition-speed), color var(--transition-speed), opacity var(--transition-speed);
 }
 
 .btn-primary {
-	background-color: var(--accent-color);
-	color: #0f172a;
+	background-color: var(--btn-primary-bg);
+	color: var(--btn-primary-text);
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
 	background-color: var(--accent-hover);
-	color: #fff;
 }
 
 .btn-secondary {
-	background-color: #475569;
-	color: var(--text-main);
+	background-color: var(--btn-secondary-bg);
+	color: var(--btn-secondary-text);
 }
 
-.btn-secondary:hover {
-	background-color: #64748b;
+.btn-secondary:hover:not(:disabled) {
+	background-color: var(--btn-secondary-hover);
 }
 
 .btn-warning {
-	background-color: var(--warning-color);
-	color: #0f172a;
+	background-color: var(--btn-warning-bg);
+	color: var(--btn-warning-text);
 }
 
-/* Tables */
+.btn:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.btn-icon {
+	background: transparent;
+	border: none;
+	color: var(--text-main);
+	font-size: 1.2rem;
+	cursor: pointer;
+	padding: 0.4rem 0.8rem;
+	border-radius: 4px;
+}
+
+.btn-icon:hover {
+	background-color: var(--bg-card);
+}
+
+/* Tablas */
 .results-container {
 	margin-top: 1.5rem;
 }
@@ -257,28 +346,39 @@ textarea {
 
 .table-paging th,
 .table-paging td {
-	border: 1px solid #475569;
+	border: 1px solid var(--border-color);
 	padding: 0.6rem;
 	text-align: center;
+	color: var(--text-main);
 }
 
 .table-paging th {
-	background-color: #334155;
+	background-color: var(--bg-card);
 	color: var(--accent-color);
-}
-
-.page-fault-yes {
-	background-color: rgba(244, 63, 94, 0.2);
-	color: var(--danger-color);
 	font-weight: bold;
 }
 
+.page-fault-yes {
+	background-color: rgba(244, 63, 94, 0.15);
+	color: #e11d48;
+	font-weight: bold;
+}
+
+body:not(.light-theme) .page-fault-yes {
+	color: var(--danger-color);
+}
+
 .page-fault-no {
-	background-color: rgba(16, 185, 129, 0.2);
+	background-color: rgba(16, 185, 129, 0.15);
+	color: #059669;
+	font-weight: bold;
+}
+
+body:not(.light-theme) .page-fault-no {
 	color: var(--success-color);
 }
 
-/* Visualizador de RAM */
+/* Visualizador de Memoria RAM */
 .ram-bar {
 	display: flex;
 	height: 65px;
@@ -286,7 +386,7 @@ textarea {
 	background-color: var(--bg-primary);
 	border-radius: var(--border-radius);
 	overflow: hidden;
-	border: 2px solid #475569;
+	border: 2px solid var(--border-color);
 	margin: 1rem 0;
 }
 
@@ -297,29 +397,32 @@ textarea {
 	justify-content: center;
 	font-size: 0.8rem;
 	font-weight: bold;
-	border-right: 1px solid rgba(255, 255, 255, 0.2);
+	border-right: 1px solid var(--border-color);
 	padding: 0.2rem;
 	text-align: center;
 	overflow: hidden;
 }
 
 .ram-block.occupied {
-	background-color: #0284c7;
-	color: #fff;
+	background-color: var(--ram-occupied-bg);
+	color: var(--ram-occupied-text);
 }
 
 .ram-block.free {
-	background-color: #334155;
-	color: var(--text-muted);
+	background-color: var(--ram-free-bg);
+	color: var(--ram-free-text);
 }
 
+/* Cajas de Salida y Logs */
 .answers-box {
 	background-color: var(--bg-primary);
-	border: 1px solid #475569;
+	border: 1px solid var(--border-color);
 	border-radius: 4px;
 	padding: 1rem;
 	font-family: monospace;
+	color: var(--text-main);
 	min-height: 180px;
 	overflow-y: auto;
 	white-space: pre-wrap;
+	transition: background-color var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed);
 }
